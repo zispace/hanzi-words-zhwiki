@@ -1,0 +1,4 @@
+httpx==0.28.1
+opencc==1.1.9
+# tqdm==4.67.1
+# pypinyin==0.55.0
