@@ -37,7 +37,7 @@ def _update_config(config_file, stats: dict):
         json.dump(stats, f, indent=2, ensure_ascii=False)
 
 
-def download_data(date: str, config_file: str, save_gz_dir: str) -> None:
+def download_data(date: str, config_file: str, save_gz_dir: str) -> tuple[bool, dict]:
     save_gz_dir = Path(save_gz_dir)
     if not save_gz_dir.exists():
         logging.debug(f"📔 创建目录 = {save_gz_dir}")
@@ -51,12 +51,18 @@ def download_data(date: str, config_file: str, save_gz_dir: str) -> None:
         version_stats = {
             "update": "",
         }
+        for cate in CATEGORIES:
+            version_stats[cate] = {}
+    old_versions = [version_stats[cate].get("version") for cate in CATEGORIES]
+
     out = []
     for cate in CATEGORIES:
         version = date
         if not version:
             url = URL_INDEX.format(cate=cate)
             version = fetch_version(url)
+            logging.info(f"version = {version}")
+
         if version:
             file_url = URL_FILE.format(cate=cate, date=version)
             save_file = download_file(file_url, save_gz_dir)
@@ -66,8 +72,17 @@ def download_data(date: str, config_file: str, save_gz_dir: str) -> None:
                 "file": save_file.name,
                 "count": None,
             }
-    _update_config(config_file, version_stats)
-    return version_stats
+
+    is_updated = False
+    for cate, old_version in zip(CATEGORIES, old_versions):
+        new_version = version_stats[cate]["version"]
+        if new_version != old_version:
+            is_updated = True
+            break
+
+    if is_updated:
+        _update_config(config_file, version_stats)
+    return is_updated, version_stats
 
 
 def convert_gz2text(stats: dict, gz_dir: str, text_dir: str, lines: int) -> dict:
@@ -155,7 +170,11 @@ def main():
     args = parser.parse_args()
     logging.info(f"↩ 输入参数 = {args}")
 
-    stats = download_data(args.date, args.config, args.gz)
+    is_updated, stats = download_data(args.date, args.config, args.gz)
+    if not is_updated:
+        logging.info("未更新")
+        return
+
     stats = convert_gz2text(stats, args.gz, args.raw, args.lines)
     _update_config(args.config, stats)
 
