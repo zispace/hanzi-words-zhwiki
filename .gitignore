@@ -1,0 +1,31 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+
+# macos
+.DS_Store
+
+# linux
+*~
+
+# ide
+.vscode/
+.idea/
+
+
+# more
+.venv-*/
+uv.lock
+trash/
+temp/
+.python-version
+*.gz
+*.yaml
