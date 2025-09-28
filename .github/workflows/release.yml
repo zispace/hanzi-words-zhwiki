@@ -2,8 +2,6 @@ name: Release
 
 on:
   push:
-    branches:
-      - main
     tags:
       - "v*"
 
@@ -34,7 +32,7 @@ jobs:
 
       - name: Install deps
         run: |
-          sudo apt update && sudo apt install -y jq
+          sudo apt-get update && sudo apt-get install -y jq
           pip install pypinyin
 
       - name: Run scripts

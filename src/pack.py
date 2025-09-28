@@ -81,7 +81,7 @@ def save_rime_file(save_dir, name, version, words):
     fm_out = fm.format(name=name, version=version)
     fm_out = dedent(fm_out).strip()
     with open(save_file, "w", encoding="utf-8") as f:
-        f.write(fm_out)
+        f.write(fm_out + "\n")
         for w in words_py:
             f.write(w + "\n")
 
