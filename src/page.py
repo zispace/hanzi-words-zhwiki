@@ -1,3 +1,4 @@
+# TODO 额外的词表
 URL_API = "https://zh.wikipedia.org/w/api.php"
 
 
@@ -10,6 +11,7 @@ def query_slang():
         "formatversion": "2",
         "page": "中国大陆网络用语列表",
     }
+    return params
 
 
 def query_redirect():
@@ -20,3 +22,4 @@ def query_redirect():
         "cmtitle": "Category:錯字重定向",
         "cmlimit": "max",
     }
+    return params

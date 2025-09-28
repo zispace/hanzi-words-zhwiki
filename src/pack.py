@@ -87,7 +87,7 @@ def save_rime_file(save_dir, name, version, words):
 
 
 def parse_pinyin(words: list[str]) -> list[str]:
-    out = []
+    out: list[str] = []
     for w in words:
         if not w:
             out.append(w)

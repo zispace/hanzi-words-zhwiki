@@ -117,13 +117,3 @@ def merge_files(data_dir, output_file):
                         fw.write(line)
 
     logging.debug("保存完成，共{count}行")
-
-
-def convert_dict_yaml():
-    fm = """
-    ---
-    name: zhwiki
-    version: "0.1"
-    sort: by_weight
-    ...
-    """

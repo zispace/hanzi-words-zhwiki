@@ -23,7 +23,7 @@ def fetch_version(url: str) -> str | None:
     return None
 
 
-def download_file(url: str, save_dir: str, chunk_size: int = 8192) -> Path|None:
+def download_file(url: str, save_dir: str, chunk_size: int = 8192) -> Path | None:
     """
     使用 httpx 流式下载大文件并保存到本地。
 

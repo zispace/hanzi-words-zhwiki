@@ -37,7 +37,7 @@ def _update_config(config_file, stats: dict):
         json.dump(stats, f, indent=2, ensure_ascii=False)
 
 
-def download_data(date: str, config_file: str, save_gz_dir: str) -> tuple[bool, dict]:
+def download_data(date: str, config_file: str, save_gz_dir: str|Path) -> tuple[bool, dict]:
     save_gz_dir = Path(save_gz_dir)
     if not save_gz_dir.exists():
         logging.debug(f"📔 创建目录 = {save_gz_dir}")
@@ -55,7 +55,6 @@ def download_data(date: str, config_file: str, save_gz_dir: str) -> tuple[bool, 
             version_stats[cate] = {}
     old_versions = [version_stats[cate].get("version") for cate in CATEGORIES]
 
-    out = []
     for cate in CATEGORIES:
         version = date
         if not version:
@@ -66,12 +65,12 @@ def download_data(date: str, config_file: str, save_gz_dir: str) -> tuple[bool, 
         if version:
             file_url = URL_FILE.format(cate=cate, date=version)
             save_file = download_file(file_url, save_gz_dir)
-            out.append(save_file)
-            version_stats[cate] = {
-                "version": version,
-                "file": save_file.name,
-                "count": None,
-            }
+            if save_file:
+                version_stats[cate] = {
+                    "version": version,
+                    "file": save_file.name,
+                    "count": None,
+                }
 
     is_updated = False
     for cate, old_version in zip(CATEGORIES, old_versions):
@@ -112,8 +111,7 @@ def format_texts(data_dir: str | Path, save_dir: str | Path, lines: int) -> None
     pattern_cjk_more = rf"^[{CJK_CHAR}\-·/]+$"
     pattern_cjk_extra = rf"^[{CJK_CHAR}{EN_PUNCTUATION}{ZH_PUNCTUATION}\-\w ]+$"
 
-    files = Path(data_dir).glob("*.txt")
-    files = sorted(files)
+    files = sorted(Path(data_dir).glob("*.txt"))
     logging.info(f"ℹ️ {data_dir} 文件共有 = {len(files)}")
 
     for file in files:
