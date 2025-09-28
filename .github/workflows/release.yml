@@ -5,6 +5,11 @@ on:
     tags:
       - "v*"
 
+  workflow_run:
+    workflows: ["sync"]
+    types:
+      - completed
+
 jobs:
   release:
     runs-on: ubuntu-latest

@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  release:
+  sync:
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -40,10 +40,10 @@ jobs:
 
       - name: Generate tag
         run: |
-          VERSION=$(jq '.zhwiki.version'  version.json)
-          YEAR=${VERSION:0:4}   # 2025
-          MONTH=${VERSION:4:2}  # 09  
-          DAY=${VERSION:6:2}    # 01
+          VERSION=$(jq -r '.zhwiki.version'  version.json)
+          YEAR=${VERSION:0:4}
+          MONTH=${VERSION:4:2}
+          DAY=${VERSION:6:2}
           TAG_NAME="v${YEAR}.${MONTH}.${DAY}"
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
           echo "Generated tag: $TAG_NAME"
