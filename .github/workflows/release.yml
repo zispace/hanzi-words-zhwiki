@@ -40,8 +40,8 @@ jobs:
 
       - name: Generate changelog
         run: |
-          VERSION1=$(jq '.zhwiki.version'  version.json)
-          VERSION2=$(jq '.zhwiktionary.version'  version.json)
+          VERSION1=$(jq -r '.zhwiki.version'  version.json)
+          VERSION2=$(jq -r '.zhwiktionary.version'  version.json)
           echo "EXTRACTED_CHANGELOG<<EOF" >> $GITHUB_ENV
           echo "- zhwiki: $VERSION1" >> $GITHUB_ENV
           echo "- zhwiktionary: $VERSION2" >> $GITHUB_ENV
