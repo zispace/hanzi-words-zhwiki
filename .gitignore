@@ -26,6 +26,7 @@ wheels/
 uv.lock
 trash/
 temp/
+release/
 .python-version
 *.gz
 *.yaml

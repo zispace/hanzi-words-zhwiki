@@ -105,7 +105,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, default="version.json")
     parser.add_argument("--dict", type=str, default="dict")
-    parser.add_argument("--output", type=str, default="temp")
+    parser.add_argument("--output", type=str, default="release")
 
     args = parser.parse_args()
     logging.info(f"↩ 输入参数 = {args}")

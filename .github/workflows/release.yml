@@ -1,0 +1,64 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    permissions:
+      contents: write
+
+    env:
+      USER: ${{ github.repository_owner }}
+      REPO_NAME: ${{ secrets.REPO }}
+      OUT_DIR: release
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get tag name
+        id: get_tag
+        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.x
+
+      - name: Install deps
+        run: |
+          sudo apt update && sudo apt install -y jq
+          pip install pypinyin
+
+      - name: Run scripts
+        run: python src/pack.py --output ${OUT_DIR}
+
+      - name: Generate changelog
+        run: |
+          VERSION1=$(jq '.zhwiki.version'  version.json)
+          VERSION2=$(jq '.zhwiktionary.version'  version.json)
+          echo "EXTRACTED_CHANGELOG<<EOF" >> $GITHUB_ENV
+          echo "- zhwiki: $VERSION1" >> $GITHUB_ENV
+          echo "- zhwiktionary: $VERSION2" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          files: |
+            ${{ env.OUT_DIR }}/*.yaml
+          name: Release ${{ env.TAG_NAME }}
+          generate_release_notes: true
+          body: |
+            ## Release Notes
+            **Version:** ${{ env.TAG_NAME }}
+
+            ${{ env.EXTRACTED_CHANGELOG }}
