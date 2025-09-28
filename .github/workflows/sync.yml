@@ -58,4 +58,12 @@ jobs:
           # commit_options: '--no-verify --signoff'
           # push_options: "--force"
           # file_pattern: "*.json *.docx *.doc"
-          tagging_message: ${{ env.TAG_NAME }}
+          # tagging_message: ${{ env.TAG_NAME }}
+
+      - name: Create and push tag
+        if: steps.auto-commit.outputs.changes_detected == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag $TAG_NAME
+          git push origin $TAG_NAME
