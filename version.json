@@ -1,13 +1,13 @@
 {
-  "update": "2025-09-28T04:09:14+0000",
+  "update": "2025-10-03T10:10:03+0000",
   "zhwiki": {
-    "version": "20250920",
-    "file": "zhwiki-20250920-all-titles-in-ns0.gz",
-    "count": 2895604
+    "version": "20251001",
+    "file": "zhwiki-20251001-all-titles-in-ns0.gz",
+    "count": 2900611
   },
   "zhwiktionary": {
-    "version": "20250920",
-    "file": "zhwiktionary-20250920-all-titles-in-ns0.gz",
-    "count": 2502973
+    "version": "20251001",
+    "file": "zhwiktionary-20251001-all-titles-in-ns0.gz",
+    "count": 2509733
   }
 }
