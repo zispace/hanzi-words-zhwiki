@@ -1898,10 +1898,10 @@ def convert_zh(converter: OpenCC, word: str) -> str:
 
 def filter_words(converter: OpenCC, words: list[str]) -> list[str]:
     """繁体转为简体并过滤重复词语，最后按长度排序"""
-    word_set = set(words)
+    # word_set = set(words)
     word_out = set()
     trans = str.maketrans(ZH_CHARS)
-    for w in word_set:
+    for w in words:
         w1 = w.translate(trans)
         w2 = convert_zh(converter, w1)
         if w2.lower() in word_out:
